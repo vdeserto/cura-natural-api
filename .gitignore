@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Environment files
+.env.dev
+.env.hom
+.env.prod
+.env.test

@@ -1,0 +1,122 @@
+import { describe, before, beforeEach, after, it } from 'node:test';
+import { deepEqual, notDeepEqual } from 'node:assert';
+import { Environment } from '../constants/Environment.js';
+import { Routes } from '../constants/Routes.js';
+import { Methods } from '../constants/Methods.js';
+
+describe('Plants Suit test', () => {
+	let SERVER = {};
+	let TOKEN = '';
+
+	async function makeRequest(url, data) {
+		const response = await fetch(url, {
+			method: Methods.POST,
+			body: JSON.stringify(data),
+			headers: {
+				authorization: TOKEN,
+			},
+		});
+		deepEqual(response.status, 200);
+		return response.json();
+	}
+
+	async function setToken() {
+		const input = {
+			user: 'victor.deserto',
+			password: '123',
+		};
+		const data = await makeRequest(
+			`${Environment.BASE_URL}${Routes.LOGIN}`,
+			input
+		);
+		TOKEN = `Bearer ${data.token}`;
+	}
+
+	before(async () => {
+		SERVER = (await import('../index.js')).app;
+
+		await new Promise((resolve, reject) =>
+			SERVER.once('listening', resolve)
+		);
+	});
+
+	before(async () => setToken());
+
+	it(`Should Authenticate the user [Plants]`, async () => {
+		const data = await makeRequest(
+			`${Environment.BASE_URL}${Routes.AUTH}`,
+			{}
+		);
+
+		notDeepEqual(data, {});
+	});
+
+	it('Should List all Plants', async () => {
+		const response = await fetch(
+			`${Environment.BASE_URL}${Routes.PLANTAS}`,
+			{
+				method: Methods.GET,
+				headers: {
+					authorization: TOKEN,
+				},
+			}
+		);
+		deepEqual(response.status, 200);
+		const data = await response.json();
+
+		notDeepEqual(data, []);
+	});
+
+	it('Should Create One Plant', async () => {
+		const plantaNova = {
+			nome: 'Capim Cidreira',
+			outrosnomes: 'Cidreira',
+			familia: 'Familia dos Capins',
+			origem: 'Regiões tropicais da Ásia (Índia)',
+			partesusadas: 'Folhas',
+			caracteristicas:
+				'Longas folhas semelhantes a capim, com um odor caracteristico',
+			usos: 'Geralmente para acalmar as pessoas',
+		};
+		const response = await fetch(
+			`${Environment.BASE_URL}${Routes.PLANTAS}`,
+			{
+				method: Methods.POST,
+				body: JSON.stringify(plantaNova),
+				headers: {
+					authorization: TOKEN,
+				},
+			}
+		);
+		deepEqual(response.status, 200);
+		const data = await response.json();
+		const {
+			nome,
+			outrosnomes,
+			familia,
+			origem,
+			partesusadas,
+			caracteristicas,
+			usos,
+		} = data;
+
+		const responseToTest = {
+			nome,
+			outrosnomes,
+			familia,
+			origem,
+			partesusadas,
+			caracteristicas,
+			usos,
+		}
+		
+
+		deepEqual(responseToTest, plantaNova);
+	});
+
+	it('Should Delete a Plant', async () => {
+
+	})
+
+	after((done) => SERVER.close(done));
+});

@@ -1,0 +1,30 @@
+{
+  "name": "cura-natural",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=PROD node --watch src/",
+    "test": "cross-env NODE_ENV=TEST node --test src/__test__/",
+    "test:dev": "cross-env NODE_ENV=TEST node --watch --test src/__test__/",
+    "dev": "cross-env NODE_ENV=DEV node --watch src/index.js",
+    "hom": "cross-env NODE_ENV=HOM node --watch src/index.js"
+  },
+  "author": "Victor Deserto <victor.deserto@gmail.com>",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": "v20.5.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "dotenv-expand": "^10.0.0",
+    "jsonwebtoken": "^9.0.1",
+    "lokijs": "^1.5.12",
+    "pg": "^8.11.2",
+    "pg-format": "^1.0.4"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
