@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 
 export default class Planta {
 	constructor({
+		id,
 		nome,
 		outrosnomes,
 		familia,
@@ -10,8 +11,7 @@ export default class Planta {
 		caracteristicas,
 		usos,
 	}) {
-		this.id = crypto.randomUUID();
-
+		this.id = id ?? crypto.randomUUID();
 		this.nome = nome;
 		this.outrosnomes = outrosnomes;
 		this.familia = familia;

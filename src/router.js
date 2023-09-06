@@ -1,52 +1,55 @@
 import { Methods } from './constants/Methods.js';
 import { Routes } from './constants/Routes.js';
 import { LoginPostHandler } from './index.js';
-import { PlantasGetHandler, PlantasGetByIdHandler, PlantasPostHandler } from './handlers/get/Plantas.js';
-import { ValidateHeaders } from './handlers/post/Auth.js'
+import { PlantasGetHandler, PlantasGetByIdHandler, PlantasPostHandler, PlantasPutHandler, PlantasDeleteHandler } from './handlers/PlantasHandler.js';
+import { ValidateHeaders } from './handlers/AuthHandler.js'
 
-export const router = [
+/**
+ * {}
+ */
+export default [
 	{
 		method: Methods.POST,
 		path: Routes.AUTH,
-		handler: ( request, response ) => ValidateHeaders(request, response),
+		handler: (request, response) => ValidateHeaders(request, response),
 		NEED_AUTH: true
 	},
 	{
 		method: Methods.POST,
 		path: Routes.LOGIN,
-		handler: ( request, response ) => LoginPostHandler(request, response),
+		handler: (request, response) => LoginPostHandler(request, response),
 		NEED_AUTH: false
 	},
 	{
 		method: Methods.GET,
 		path: Routes.PLANTAS,
-		handler: ( request, response ) => PlantasGetHandler(request, response),
+		handler: (request, response) => PlantasGetHandler(request, response),
 		NEED_AUTH: true
 	},
 	{
 		method: Methods.GET,
-		path: `${Routes.PLANTAS}/2`,
-		handler: ( request, response ) => PlantasGetByIdHandler(request, response),
-		NEED_AUTH: true
+		path: `${Routes.PLANTAS}/:id`,
+		handler: (request, response) => PlantasGetByIdHandler(request, response),
+		NEED_AUTH: false
 	},
 	{
 		method: Methods.POST,
 		path: Routes.PLANTAS,
-		handler: ( request, response ) => PlantasPostHandler(request, response),
+		handler: (request, response) => PlantasPostHandler(request, response),
 		NEED_AUTH: true
 	},
-	// {
-	// 	method: Methods.PUT,
-	// 	path: Routes.PLANTAS,
-	// 	handler: ({ request, response }) =>
-	// 		PlantasPutHandler(request, response),
-	// },
-	// {
-	// 	method: Methods.DELETE,
-	// 	path: Routes.PLANTAS,
-	// 	handler: ({ request, response }) =>
-	// 		PlantasDeleteHandler(request, response),
-	// },
+	{
+		method: Methods.PUT,
+		path: `${Routes.PLANTAS}/:id`,
+		handler: (request, response) => PlantasPutHandler(request, response),
+		NEED_AUTH: true
+	},
+	{
+		method: Methods.DELETE,
+		path: `${Routes.PLANTAS}/:id`,
+		handler: (request, response) => PlantasDeleteHandler(request, response),
+		NEED_AUTH: true
+	},
 	// {
 	// 	method: Methods.GET,
 	// 	path: Routes.DOENCAS,

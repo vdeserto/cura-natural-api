@@ -18,7 +18,7 @@ export async function Connect() {
 
 	// you can also use async/await
 	const POOL_RESPONDING = await pool.query('SELECT NOW()');
-	console.log( ...POOL_RESPONDING.rows );
+			// console.log( ...POOL_RESPONDING.rows );
 	// await pool.end();
 	return pool;
 
